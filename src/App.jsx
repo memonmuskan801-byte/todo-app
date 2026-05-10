@@ -24,9 +24,14 @@ const today = new Intl.DateTimeFormat("en-CA", {
   day: "2-digit",
 }).format(new Date());
 
+const safeRandomId = () =>
+  typeof crypto !== "undefined" && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `task_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+
 const initialTasks = [
   {
-    id: crypto.randomUUID(),
+    id: safeRandomId(),
     title: "Finish React todo app",
     priority: "high",
     category: "Work",
@@ -35,7 +40,7 @@ const initialTasks = [
     createdAt: Date.now() - 2000,
   },
   {
-    id: crypto.randomUUID(),
+    id: safeRandomId(),
     title: "Review today's important tasks",
     priority: "medium",
     category: "Personal",
@@ -197,9 +202,14 @@ function App() {
 
     if (!cleanTitle) return;
 
+    const newId =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `task_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+
     setTasks((currentTasks) => [
       {
-        id: crypto.randomUUID(),
+        id: newId,
         title: cleanTitle,
         priority: taskPriority,
         category: taskCategory.trim() || "General",
